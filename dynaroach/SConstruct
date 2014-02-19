@@ -1,7 +1,7 @@
 import os
 
 xcCompiler = "/opt/microchip/xc16/v1.11/"
-imageProc = "../imageproc-lib"
+imageProc = "home/etumang/research/imageproc-lib"
 
 assemblerFlags = "-Wa,-g" #pulled from makefile
 env = Environment(PIC = '33Fj128MC706A',
