@@ -19,7 +19,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-
+#include "cam.h"
+#include "ovcam.h"
 
 #define FLASH_8MBIT_BYTES_PER_PAGE          264
 
