@@ -1,1 +1,0 @@
-python2 imageproc/host/bootloader2.py $1 230400 ../dynaroach/dist/default/production/dynaroach.production.hex
