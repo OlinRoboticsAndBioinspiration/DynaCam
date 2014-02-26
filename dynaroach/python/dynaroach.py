@@ -39,6 +39,7 @@ G                   = 9.81
 BEMF_VOLTS_PER_CNT  = 3.3/512
 VBATT_VOLTS_PER_CNT = 3.3/512
 
+IMG_ROWS = 160#check this...
 
 class DynaRoach():
     '''Class representing the dynaRoACH robot'''
@@ -64,6 +65,7 @@ class DynaRoach():
         self.data_cnt = 0
         self.state_data = []
         self.last_sample_count = 0
+        row = []
 
         self.radio = BaseStation(dev_name, baud_rate, dest_addr, self.receive)
 
@@ -95,7 +97,8 @@ class DynaRoach():
             if (len(data) == 35):
               datum = list(unpack('<L3f3h2HB4H', data))
               print datum[6:]
-
+        elif cmd.GET_ROW:
+            row = data
 
     def echo(self):
         '''
@@ -116,6 +119,17 @@ class DynaRoach():
             print('\n')
             print('\n')
             time.sleep(1)
+
+    def get_image(self):
+        img = np.array()#set sizes of these later
+
+        self.radio.send(cmd.STATUS_UNUSED,cmd.START_CAM,0)
+        time.sleep(1)
+        self.radio.send(cmd.STATUS_UNUSED,cmd.CAPTURE_FRAME,0)
+
+        for i in range(0,IMG_ROWS):
+            self.radio.send(cmd.STATUS_UNUSED,cmd.GET_ROW,0)
+            img = np.vstack([img, row])
 
     def set_motor_config(self, rising_duty_cycle, falling_duty_cycle):
       '''
