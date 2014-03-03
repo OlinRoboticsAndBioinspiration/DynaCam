@@ -9,6 +9,10 @@ running the dynaRoACH robot.
 import sys
 import time
 import math
+import os
+import io
+import Image
+from array import array
 
 from serial import Serial, SerialException
 import numpy as np
@@ -77,6 +81,8 @@ class DynaRoach():
             print unpack('<3h', data)
         elif typeID == cmd.TEST_DFLASH:
             print ''.join(data)
+        elif typeID == cmd.RUN_CAM:
+            print ''.join(data)
         elif typeID == cmd.TEST_BATT:
             print unpack('2H', data)
         elif typeID == cmd.TX_SAVED_DATA:
@@ -95,8 +101,25 @@ class DynaRoach():
             if (len(data) == 35):
               datum = list(unpack('<L3f3h2HB4H', data))
               print datum[6:]
-
-
+              
+    def readimage(path):
+        count= os.stat(path).st_size /2
+        with open(path,"rb") as f:
+            return bytearray(f.read())
+        bytes= readimage(path+extension)
+        image= Image.open(io.BytesIO(bytes))
+        image.save(savepath)
+        
+    def test_dynacam(self, packet):
+        'Native Rows = 120 Native Columns= 160'
+        print ('testing DynaCam')
+        for columns in packet:
+            if len(row[columns]) != 160:
+                raise ValueError('Length of the Row at %i column does not match' %(column))
+            elif readimage
+         time.sleep(0.2)
+         self.radio.send(cmd.STATUS_UNUSED, cmd.RUN_CAM, [])
+          
     def echo(self):
         '''
         Description:
