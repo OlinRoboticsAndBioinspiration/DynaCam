@@ -9,6 +9,10 @@ running the dynaRoACH robot.
 import sys
 import time
 import math
+import os
+import io
+import Image
+from array import array
 
 from serial import Serial, SerialException
 import numpy as np
@@ -21,8 +25,8 @@ from lib.basestation import BaseStation
 from lib.payload import Payload
 
 DEFAULT_BAUD_RATE = 230400
-DEFAULT_DEST_ADDR = '\x20\x00'
-DEFAULT_DEV_NAME = '/dev/ttyUSB0' #'/dev/tty.usbserial-A8THYF0S' #Dev ID for ORANGE antenna base station
+DEFAULT_DEST_ADDR = '\x01\x10'
+DEFAULT_DEV_NAME = '/dev/tty.usbserial-A8THYF0S' #Dev ID for ORANGE antenna base station
 
 SMA_RIGHT = 0
 SMA_LEFT =  1
@@ -39,7 +43,6 @@ G                   = 9.81
 BEMF_VOLTS_PER_CNT  = 3.3/512
 VBATT_VOLTS_PER_CNT = 3.3/512
 
-IMG_ROWS = 160#check this...
 
 class DynaRoach():
     '''Class representing the dynaRoACH robot'''
@@ -65,7 +68,6 @@ class DynaRoach():
         self.data_cnt = 0
         self.state_data = []
         self.last_sample_count = 0
-        row = []
 
         self.radio = BaseStation(dev_name, baud_rate, dest_addr, self.receive)
 
@@ -78,6 +80,8 @@ class DynaRoach():
         if typeID == cmd.TEST_ACCEL or typeID == cmd.TEST_GYRO:
             print unpack('<3h', data)
         elif typeID == cmd.TEST_DFLASH:
+            print ''.join(data)
+        elif typeID == cmd.RUN_CAM:
             print ''.join(data)
         elif typeID == cmd.TEST_BATT:
             print unpack('2H', data)
@@ -97,9 +101,25 @@ class DynaRoach():
             if (len(data) == 35):
               datum = list(unpack('<L3f3h2HB4H', data))
               print datum[6:]
-        elif cmd.GET_ROW:
-            row = data
-
+              
+    def readimage(path):
+        count= os.stat(path).st_size /2
+        with open(path,"rb") as f:
+            return bytearray(f.read())
+        bytes= readimage(path+extension)
+        image= Image.open(io.BytesIO(bytes))
+        image.save(savepath)
+        
+    def test_dynacam(self, packet):
+        'Native Rows = 120 Native Columns= 160'
+        print ('testing DynaCam')
+        for columns in packet:
+            if len(row[columns]) != 160:
+                raise ValueError('Length of the Row at %i column does not match' %(column))
+            elif readimage
+         time.sleep(0.2)
+         self.radio.send(cmd.STATUS_UNUSED, cmd.RUN_CAM, [])
+          
     def echo(self):
         '''
         Description:
@@ -119,17 +139,6 @@ class DynaRoach():
             print('\n')
             print('\n')
             time.sleep(1)
-
-    def get_image(self):
-        img = np.array()#set sizes of these later
-
-        self.radio.send(cmd.STATUS_UNUSED,cmd.START_CAM,0)
-        time.sleep(1)
-        self.radio.send(cmd.STATUS_UNUSED,cmd.CAPTURE_FRAME,0)
-
-        for i in range(0,IMG_ROWS):
-            self.radio.send(cmd.STATUS_UNUSED,cmd.GET_ROW,0)
-            img = np.vstack([img, row])
 
     def set_motor_config(self, rising_duty_cycle, falling_duty_cycle):
       '''
@@ -194,6 +203,7 @@ class DynaRoach():
     def get_gyro_calib_param(self):
         print("Requesting gyro calibration parameters...")
         self.radio.send(cmd.STATUS_UNUSED, cmd.GET_GYRO_CALIB_PARAM, [])
+        self.gyro_offsets = None
 
     def test_gyro(self):
         '''
@@ -222,11 +232,6 @@ class DynaRoach():
 
         print("Testing data flash...")
         self.radio.send(cmd.STATUS_UNUSED, cmd.TEST_DFLASH, [])
-        
-    
-    def toggleLED(self):
-        print("toggleLED")
-        self.radio.send(cmd.STATUS_UNUSED, cmd.TEST_LED, [])
 
 #    def test_motor(self, motor_id, time, duty_cycle, direction, return_emf=0):
 #        '''

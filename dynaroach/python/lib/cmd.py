@@ -12,7 +12,6 @@ GET_SAMPLE_COUNT        = 0x09
 RUN_GYRO_CALIB          = 0x0A
 GET_GYRO_CALIB_PARAM    = 0x0B
 TEST_MOTOR_SWEEP        = 0x0C
-TEST_LED                = 0x0D
 
 CONFIG_SMA      = 0x10
 CONFIG_TRIAL    = 0x11
@@ -26,5 +25,6 @@ DATA_STREAMING  = 0x18
 MOTOR_CONFIG    = 0x19
 RESET           = 0x1A
 ECHO            = 0x1F
-
+TEST_LED        = 0x1C
+START_CAM       = 0x1B
 
