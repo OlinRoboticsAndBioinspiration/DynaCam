@@ -25,5 +25,6 @@ DATA_STREAMING  = 0x18
 MOTOR_CONFIG    = 0x19
 RESET           = 0x1A
 ECHO            = 0x1F
-
+TEST_LED        = 0x1C
+START_CAM       = 0x1B
 

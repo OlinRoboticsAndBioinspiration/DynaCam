@@ -61,6 +61,8 @@ StateTransition* stTable;
 unsigned char st_idx;
 static unsigned long trial_start_time = 0;
 
+int cameraNotRunning = 1;//used not so that conditional can be set to just if(cameraNotRunning)
+
 static void cmdNop(unsigned char status, unsigned char length, unsigned char *frame);
 static void cmdTxSavedData(unsigned char status, unsigned char length, unsigned char *frame);
 static void cmdConfigureSma(unsigned char status, unsigned char length, unsigned char *frame);
@@ -83,7 +85,7 @@ static void cmdSetDataStreaming(unsigned char status, unsigned char length, unsi
 static void cmdSetMotorConfig(unsigned char status, unsigned char length, unsigned char *frame);
 static void cmdReset(unsigned char status, unsigned char length, unsigned char *frame);
 static void cmdTestLED(unsigned char status, unsigned char length, unsigned char* frame);
-static void cmdTestDynaCam(unsigned char status, unsigned char length, unsigned char* frame);
+static void cmdStartCam(unisgned char status, unsigned char length, unsigned char *frame);
 static void send(unsigned char status, unsigned char length, unsigned char *frame, unsigned char type);
 
 //Delete these once trackable management code is working
@@ -125,21 +127,26 @@ void cmdSetup(void)
     cmd_func[CMD_RESET] = &cmdReset;
     cmd_func[CMD_TEST_SWEEP] = &cmdTestSweep;
     cmd_func[CMD_TEST_LED] = &cmdTestLED;
-    cmd_func[CMD_TEST_DYNACAM]= &cmdTestDynaCam;
+    cmd_func[CMD_START_CAM] = &cmdStartCam;
     MotorConfig.rising_edge_duty_cycle = 0;
     MotorConfig.falling_edge_duty_cycle = 0;
 }
 
-static void cmdTestLED(unsigned char status, unsigned char length, unsigned char *frame)
-{LED_1= ~LED_1;
+static void cmdTestLED(unsigned char status, unsigned char length, unsigned char *frame){
+    LED_1= ~LED_1;
 }
 
-static void cmdTestDynaCam (unsigned char status, unsigned char length, unsigned char *frame)
-{
-    
-    
-    
+static void cmdStartCam(unsigned char status, unsigned char length, unsigned char *frame){
+    if (cameraNotRunning){
+        camSetup();
+        cameraNotRunning = 1;
+    }
+    cmdTestLED();
+    delay_ms(100);
+    cmdTestLED();
 }
+
+
 
 static void cmdSetMotor(unsigned char status, unsigned char length, unsigned char *frame)
 {

@@ -67,6 +67,8 @@
 #define CMD_SET_MOTOR_CONFIG    0x19
 #define CMD_RESET               0x1A
 #define CMD_ECHO                0x1F
+#define CMD_START_CAM	        0x1B
+#define CMD_TEST_LED            0x1C
 
 #define TIMER1_FCY          250
 
