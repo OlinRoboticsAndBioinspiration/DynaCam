@@ -177,6 +177,8 @@ class DynaRoach():
         self.data_cnt = 0
         self.radio.send(cmd.STATUS_UNUSED, cmd.CONFIG_SMA, data_out)
 
+    def dynacam(self):
+        
     def run_trial(self):
         '''
             Description:
