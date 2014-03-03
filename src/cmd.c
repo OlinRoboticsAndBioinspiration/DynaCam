@@ -54,6 +54,7 @@ static uByte2 sample_cnt;
 
 static int streamMod = 0;
 static int is_data_streaming = 0;
+camFrame frame;
 
 void(*cmd_func[MAX_CMD_FUNC_SIZE])(unsigned char, unsigned char, unsigned char*);
 
@@ -62,6 +63,7 @@ unsigned char st_idx;
 static unsigned long trial_start_time = 0;
 
 int cameraNotRunning = 1;//used not so that conditional can be set to just if(cameraNotRunning)
+row currentRow;
 
 static void cmdNop(unsigned char status, unsigned char length, unsigned char *frame);
 static void cmdTxSavedData(unsigned char status, unsigned char length, unsigned char *frame);
@@ -87,6 +89,7 @@ static void cmdReset(unsigned char status, unsigned char length, unsigned char *
 static void cmdTestLED(unsigned char status, unsigned char length, unsigned char* frame);
 static void cmdStartCam(unisgned char status, unsigned char length, unsigned char *frame);
 static void send(unsigned char status, unsigned char length, unsigned char *frame, unsigned char type);
+static void cmdGetFrame(unsigned char status, unsigned char length, unsigned char *frame);
 
 //Delete these once trackable management code is working
 
@@ -128,6 +131,7 @@ void cmdSetup(void)
     cmd_func[CMD_TEST_SWEEP] = &cmdTestSweep;
     cmd_func[CMD_TEST_LED] = &cmdTestLED;
     cmd_func[CMD_START_CAM] = &cmdStartCam;
+    cmd_func[CMD_GET_FRAME] = &cmdGetFrame;
     MotorConfig.rising_edge_duty_cycle = 0;
     MotorConfig.falling_edge_duty_cycle = 0;
 }
@@ -139,6 +143,7 @@ static void cmdTestLED(unsigned char status, unsigned char length, unsigned char
 static void cmdStartCam(unsigned char status, unsigned char length, unsigned char *frame){
     if (cameraNotRunning){
         camSetup();
+        camStart();
         cameraNotRunning = 1;
     }
     cmdTestLED();
@@ -146,7 +151,17 @@ static void cmdStartCam(unsigned char status, unsigned char length, unsigned cha
     cmdTestLED();
 }
 
+static void cmdGetFrame(unsigned char status, unsigned char length, unsigned char *frame){
+    if(camHasNewFrame()){
+        frame = camGetFrame();
+    }
+}
 
+static void cmdSendRow(unsigned char status, unsigned char length, unsigned char *frame){
+    int rowNum = length;
+    row = frame.rows[rowNum];
+
+}
 
 static void cmdSetMotor(unsigned char status, unsigned char length, unsigned char *frame)
 {
