@@ -102,7 +102,7 @@ class DynaRoach():
               datum = list(unpack('<L3f3h2HB4H', data))
               print datum[6:]
               
-    def readimage(path):
+    def readimage(path):  "Question where does bytearray saved as a file?" 
         count= os.stat(path).st_size /2
         with open(path,"rb") as f:
             return bytearray(f.read())
@@ -110,15 +110,19 @@ class DynaRoach():
         image= Image.open(io.BytesIO(bytes))
         image.save(savepath)
         
-    def test_dynacam(self, packet):
+    def test_dynacam(self):
+        outputarray= np.zeros((120,160))
         'Native Rows = 120 Native Columns= 160'
         print ('testing DynaCam')
-        for columns in packet:
+        self.radio.send(cmd.STATUS_UNUSED, cmd.RUN_CAM, data)
+        for columns in data:
             if len(row[columns]) != 160:
                 raise ValueError('Length of the Row at %i column does not match' %(column))
-            elif readimage
-         time.sleep(0.2)
-         self.radio.send(cmd.STATUS_UNUSED, cmd.RUN_CAM, [])
+            elif outputarray= np.vstack(column, next_column) "How do I get two columns"
+            
+
+        image= Image.open(io.BytesIO(outputarray))
+        image.save(savepath)
           
     def echo(self):
         '''
