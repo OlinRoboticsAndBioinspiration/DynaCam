@@ -90,6 +90,7 @@ static void cmdTestLED(unsigned char status, unsigned char length, unsigned char
 static void cmdStartCam(unisgned char status, unsigned char length, unsigned char *frame);
 static void send(unsigned char status, unsigned char length, unsigned char *frame, unsigned char type);
 static void cmdGetFrame(unsigned char status, unsigned char length, unsigned char *frame);
+static void cmdSendRow(unsigned char status, unsigned char length,unsigned char *frame);
 
 //Delete these once trackable management code is working
 
@@ -132,6 +133,7 @@ void cmdSetup(void)
     cmd_func[CMD_TEST_LED] = &cmdTestLED;
     cmd_func[CMD_START_CAM] = &cmdStartCam;
     cmd_func[CMD_GET_FRAME] = &cmdGetFrame;
+    cmd_func[CMD_SEND_ROW] = &cmdSendRow;
     MotorConfig.rising_edge_duty_cycle = 0;
     MotorConfig.falling_edge_duty_cycle = 0;
 }
@@ -152,7 +154,7 @@ static void cmdStartCam(unsigned char status, unsigned char length, unsigned cha
 }
 
 static void cmdGetFrame(unsigned char status, unsigned char length, unsigned char *frame){
-    if(camHasNewFrame()){
+    if(camHasNewFrame()){//todo- what if cam has no new frame?
         frame = camGetFrame();
     }
 }
@@ -160,6 +162,7 @@ static void cmdGetFrame(unsigned char status, unsigned char length, unsigned cha
 static void cmdSendRow(unsigned char status, unsigned char length, unsigned char *frame){
     int rowNum = length;
     row = frame.rows[rowNum];
+    send(status,NATIVE_IMAGE_COLS,row.pixels, CMD_SEND_ROW);
 
 }
 
