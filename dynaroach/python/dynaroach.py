@@ -1,4 +1,4 @@
-'''
+l'''
 File: dynaroach.py
 Author: Aaron M. Hoover
 Date: 2012-05-03
@@ -109,17 +109,20 @@ class DynaRoach():
         bytes= readimage(path+extension)
         image= Image.open(io.BytesIO(bytes))
         image.save(savepath)
+
+    
+    def test_LED(self):
+        self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_TEST_LED, [])
         
     def test_dynacam(self):
         outputarray= np.zeros((120,160))
         'Native Rows = 120 Native Columns= 160'
         print ('testing DynaCam')
-        self.radio.send(cmd.STATUS_UNUSED, cmd.RUN_CAM, data)
+        self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, data)
         for columns in data:
             if len(row[columns]) != 160:
                 raise ValueError('Length of the Row at %i column does not match' %(column))
             elif outputarray= np.vstack(column, next_column) "How do I get two columns"
-            
 
         image= Image.open(io.BytesIO(outputarray))
         image.save(savepath)

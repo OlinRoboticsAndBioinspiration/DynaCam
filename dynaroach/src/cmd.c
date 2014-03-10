@@ -142,7 +142,7 @@ static void cmdRunCam()
     while(i < 160);
     if(camHasNewRow){
         r = camGetRow();
-        cmdTestLED();
+        //cmdTestLED();
     }
     
 }
