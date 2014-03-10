@@ -20,15 +20,8 @@
 #include <string.h>
 #include <stdint.h>
 #include "cam.h"
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 #include "ovcam.h"
-=======
-=======
->>>>>>> Stashed changes
 #include "cam.c"
-
->>>>>>> Stashed changes
 
 #define FLASH_8MBIT_BYTES_PER_PAGE          264
 
@@ -138,15 +131,15 @@ void cmdSetup(void)
 
 static void cmdTestLED(unsigned char status, unsigned char length, unsigned char *frame)
 {
-    LED_1= ~LED_1;
+        LED_1= ~LED_1;
 }
 
 static void cmdRunCam()
 {
     camStart();
     int i = 0;
-    camRow r;
-    while(i < NATIVE_IMAGE_ROWS);
+    CamRow r;
+    while(i < 160);
     if(camHasNewRow){
         r = camGetRow();
         cmdTestLED();
