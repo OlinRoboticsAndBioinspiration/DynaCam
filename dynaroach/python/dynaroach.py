@@ -119,12 +119,17 @@ class DynaRoach():
         outputarray= np.zeros((120,160))
         'Native Rows = 120 Native Columns= 160'
         print ('testing DynaCam')
-        self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, data)
-        for columns in data:
-            if len(row[columns]) != 160:
-                raise ValueError('Length of the Row at %i column does not match' %(column))
-            else:
-                print('no value error')
+
+        for i in range(0,outputarray.length()):
+            self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, i, data)
+            for columns in data:
+                if len(row[columns]) != 160:
+                    raise ValueError('Length of the Row at %i column does not match' %(column))
+                    i = i-1
+                else:
+                    print('no value error')
+                    outputarray[i] = data
+
             
             '''elif outputarray= np.vstack(column, next_column) "How do I get two columns"'''
 
