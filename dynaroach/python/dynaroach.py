@@ -26,7 +26,7 @@ from lib.payload import Payload
 
 DEFAULT_BAUD_RATE = 230400
 DEFAULT_DEST_ADDR = '\x01\x10'
-DEFAULT_DEV_NAME = '/dev/tty.usbserial-A8THYF0S' #Dev ID for ORANGE antenna base station
+DEFAULT_DEV_NAME = '/dev/ttyUSB0'   #/dev/tty.usbserial-A8THYF0S' '''#Dev ID for ORANGE antenna base station
 
 SMA_RIGHT = 0
 SMA_LEFT =  1
@@ -102,8 +102,9 @@ class DynaRoach():
               datum = list(unpack('<L3f3h2HB4H', data))
               print datum[6:]
               
-    def readimage(path):  "Question where does bytearray saved as a file?" 
-        count= os.stat(path).st_size /2
+    def readimage(path):
+        count= os.stat(path).st_size/2
+        
         with open(path,"rb") as f:
             return bytearray(f.read())
         bytes= readimage(path+extension)
@@ -122,7 +123,10 @@ class DynaRoach():
         for columns in data:
             if len(row[columns]) != 160:
                 raise ValueError('Length of the Row at %i column does not match' %(column))
-            elif outputarray= np.vstack(column, next_column) "How do I get two columns"
+            else:
+                print('no value error')
+            
+            '''elif outputarray= np.vstack(column, next_column) "How do I get two columns"'''
 
         image= Image.open(io.BytesIO(outputarray))
         image.save(savepath)
@@ -239,6 +243,7 @@ class DynaRoach():
 
         print("Testing data flash...")
         self.radio.send(cmd.STATUS_UNUSED, cmd.TEST_DFLASH, [])
+
 
 #    def test_motor(self, motor_id, time, duty_cycle, direction, return_emf=0):
 #        '''

@@ -129,7 +129,7 @@ void cmdSetup(void)
 
 static void cmdTestLED(unsigned char status, unsigned char length, unsigned char *frame)
 {
-        LED_1= ~LED_1;
+        LED_2= ~LED_2;
 }
 
 static void cmdRunCam(unsigned char status, unsigned char length, unsigned char *frame)
