@@ -21,8 +21,6 @@
 #include <stdint.h>
 #include "cam.h"
 #include "ovcam.h"
-#include "cam.c"
-
 #define FLASH_8MBIT_BYTES_PER_PAGE          264
 
 
@@ -134,7 +132,7 @@ static void cmdTestLED(unsigned char status, unsigned char length, unsigned char
         LED_1= ~LED_1;
 }
 
-static void cmdRunCam()
+static void cmdRunCam(unsigned char status, unsigned char length, unsigned char *frame)
 {
     camStart();
     int i = 0;

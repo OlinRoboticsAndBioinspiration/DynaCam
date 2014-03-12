@@ -27,7 +27,11 @@ list = Builder(action = 'xc16-objdump -S -D $SOURCE > $TARGET',
 env.Append(BUILDERS = {'List' : list})
 
 imageProcLibFiles = [imageProc + "/" + n for n in [ 
+    "counter.c",
     "dfmem.c",
+    "cam.c",
+    "ovcam.c",
+    "ovcamHS.s",
     "gyro.c",
     "i2c_driver.c",
     "payload.c",

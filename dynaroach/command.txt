@@ -1,0 +1,2 @@
+sudo /home/akeum/Spring2014/DynaCam/DynaCam/bootloader/imageproc/host/bootloader2.py /dev/ttyUSB0 230400 ~/Spring2014/DynaCam/DynaCam/dynaroach/dynaroach.hex
+
