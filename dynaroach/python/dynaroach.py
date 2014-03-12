@@ -1,4 +1,4 @@
-l'''
+'''
 File: dynaroach.py
 Author: Aaron M. Hoover
 Date: 2012-05-03
