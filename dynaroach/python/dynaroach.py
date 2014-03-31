@@ -117,12 +117,12 @@ class DynaRoach():
         
     def test_dynacam(self):
         outputarray= np.zeros((120,160))
-        'Native Rows = 120 Native Columns= 160'
+        #Native Rows = 120 Native Columns= 160
         print ('testing DynaCam')
 
         #for i in range(0,outputarray.length()):
         self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, i, [])
-        data = last_packet.get(pld)
+        data = last_packet.get('rf_data')
         print(data)
             #for columns in data:
                 #if len(row[columns]) != 160:
