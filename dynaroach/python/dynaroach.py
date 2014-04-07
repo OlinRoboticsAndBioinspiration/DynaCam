@@ -25,8 +25,8 @@ from lib.basestation import BaseStation
 from lib.payload import Payload
 
 DEFAULT_BAUD_RATE = 230400
-DEFAULT_DEST_ADDR = '\x01\x10'
-DEFAULT_DEV_NAME = '/dev/ttyUSB0'   #/dev/tty.usbserial-A8THYF0S' '''#Dev ID for ORANGE antenna base station
+DEFAULT_DEST_ADDR = '\x20\x01'
+DEFAULT_DEV_NAME = '/dev/ttyUSB1'   #/dev/tty.usbserial-A8THYF0S' '''#Dev ID for ORANGE antenna base station
 
 SMA_RIGHT = 0
 SMA_LEFT =  1
@@ -121,7 +121,7 @@ class DynaRoach():
         print ('testing DynaCam')
 
         #for i in range(0,outputarray.length()):
-        self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, i, [])
+        self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, [])
         data = last_packet.get('rf_data')
         print(data)
             #for columns in data:
@@ -132,12 +132,6 @@ class DynaRoach():
                     #print('no value error')
                     #outputarray[i] = data
 
-            
-            '''elif outputarray= np.vstack(column, next_column) "How do I get two columns"'''
-
-        image= Image.open(io.BytesIO(outputarray))
-        image.save(savepath)
-          
     def echo(self):
         '''
         Description:
