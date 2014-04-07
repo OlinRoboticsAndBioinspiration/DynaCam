@@ -137,11 +137,14 @@ static void cmdRunCam(unsigned char status, unsigned char length, unsigned char 
     camStart();
     int i = 0;
     CamRow r;
-    while(i < 160);
+    r = camGetRow();
+    send(status,length,frame,r);
+
+    /*while(i < 160);
     if(camHasNewRow){
         r = camGetRow();
-        //cmdTestLED();
-    }
+        cmdTestLED();
+    }*/
     
 }
 
