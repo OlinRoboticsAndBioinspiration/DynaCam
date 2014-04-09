@@ -136,12 +136,27 @@ static void cmdRunCam(unsigned char status, unsigned char length, unsigned char 
 {   camSetup();
     cmdTestLED;
     camStart();
+<<<<<<< HEAD
     cmdTestLED;
     CamRow r; 
     CamFrame F;
     //r= camGetRow();
     unsigned int i, j;
     unsigned char* pix;
+=======
+    cmdTestLED();
+    int i = 0;
+    CamRow r;
+    r = camGetRow();
+    unsigned char* pix = r->pixels;
+    send(status,160,pix,CMD_RUN_CAM);
+
+    /*while(i < 160);
+    if(camHasNewRow){
+        r = camGetRow();
+        cmdTestLED();
+    }*/
+>>>>>>> 40ae1cd2107b31cf77dd89dc17d94f15a442783e
     
     if(camHasNewFrame()) {
         F = camGetFrame();
