@@ -133,19 +133,29 @@ static void cmdTestLED(unsigned char status, unsigned char length, unsigned char
 }
 
 static void cmdRunCam(unsigned char status, unsigned char length, unsigned char *frame)
-{
+{   camSetup();
+    cmdTestLED;
     camStart();
-    int i = 0;
-    CamRow r;
-    r = camGetRow();
-    send(status,length,frame,r);
-
-    /*while(i < 160);
-    if(camHasNewRow){
-        r = camGetRow();
-        cmdTestLED();
-    }*/
+    cmdTestLED;
+    CamRow r; 
+    CamFrame F;
+    //r= camGetRow();
+    unsigned int i, j;
+    unsigned char* pix;
     
+    if(camHasNewFrame()) {
+        F = camGetFrame();
+        
+        for(i = 0; i < F->num_rows; i++) {
+            r = F-> rows[i];
+            pix = r -> pixels;
+            send(status, 160, pix, CMD_RUN_CAM);
+            cmdTestLED;
+            delay_ms(150);
+            }
+        }
+    camStop();
+   //camReturnFrame(frame);
 }
 
 static void cmdSetMotor(unsigned char status, unsigned char length, unsigned char *frame)
