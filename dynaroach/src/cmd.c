@@ -134,38 +134,26 @@ static void cmdTestLED(unsigned char status, unsigned char length, unsigned char
 
 static void cmdRunCam(unsigned char status, unsigned char length, unsigned char *frame)
 {   camSetup();
-    cmdTestLED;
+    LED_1 = 0;
     camStart();
-<<<<<<< HEAD
-    cmdTestLED;
+
     CamRow r; 
     CamFrame F;
-    //r= camGetRow();
-    unsigned int i, j;
+    
+    unsigned int i;
     unsigned char* pix;
-=======
-    cmdTestLED();
-    int i = 0;
-    CamRow r;
-    r = camGetRow();
-    unsigned char* pix = r->pixels;
-    send(status,160,pix,CMD_RUN_CAM);
 
-    /*while(i < 160);
-    if(camHasNewRow){
-        r = camGetRow();
-        cmdTestLED();
-    }*/
->>>>>>> 40ae1cd2107b31cf77dd89dc17d94f15a442783e
+    LED_1 = 1;
     
     if(camHasNewFrame()) {
         F = camGetFrame();
         
         for(i = 0; i < F->num_rows; i++) {
+            LED_1 = 0;
             r = F-> rows[i];
             pix = r -> pixels;
             send(status, 160, pix, CMD_RUN_CAM);
-            cmdTestLED;
+            LED_1 = 1;
             delay_ms(150);
             }
         }
