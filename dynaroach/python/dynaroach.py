@@ -117,14 +117,21 @@ class DynaRoach():
         self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_TEST_LED, [])
         
     def test_dynacam(self):
+        #todo: find a way to control timing.
         Rows= 120
         Columns= 160
         imagearray= np.zeros((Rows, Columns,3), dtype= np.uint8)
-        '''#outputarray= np.zeros((120,160))
-        #Native Rows = 120 Native Columns= 160'''
+        #outputarray= np.zeros((120,160))
+        #Native Rows = 120 Native Columns= 160
         print ('testing DynaCam')
         self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, [])
         self.print_packet(self.last_packet)
+        data = self.last_packet('rf_data')
+        for i in range(0,Rows):
+            for j in range(0, Columns):
+                imagearray [i][j] = data[j]
+        
+
         
     def echo(self):
         '''
