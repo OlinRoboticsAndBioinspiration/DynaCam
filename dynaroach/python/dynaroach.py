@@ -11,7 +11,7 @@ import time
 import math
 import os
 import io
-import Image
+from PIL import Image
 from array import array
 
 from serial import Serial, SerialException
@@ -82,7 +82,8 @@ class DynaRoach():
         elif typeID == cmd.TEST_DFLASH:
             print ''.join(data)
         elif typeID == cmd.CMD_RUN_CAM:
-            print ''.join(data)
+            camint = unpack('>i',data)
+            print camint
         elif typeID == cmd.TEST_BATT:
             print unpack('2H', data)
         elif typeID == cmd.TX_SAVED_DATA:
@@ -116,11 +117,12 @@ class DynaRoach():
         self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_TEST_LED, [])
         
     def test_dynacam(self):
+        Rows= 120
+        Columns= 160
+        imagearray= np.zeros((Rows, Columns,3), dtype= np.uint8)
         '''#outputarray= np.zeros((120,160))
         #Native Rows = 120 Native Columns= 160'''
-        
         print ('testing DynaCam')
-
         self.radio.send(cmd.STATUS_UNUSED, cmd.CMD_RUN_CAM, [])
         self.print_packet(self.last_packet)
         
