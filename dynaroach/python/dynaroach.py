@@ -81,7 +81,7 @@ class DynaRoach():
             print unpack('<3h', data)
         elif typeID == cmd.TEST_DFLASH:
             print ''.join(data)
-        elif typeID == cmd.RUN_CAM:
+        elif typeID == cmd.CMD_RUN_CAM:
             print ''.join(data)
         elif typeID == cmd.TEST_BATT:
             print unpack('2H', data)
